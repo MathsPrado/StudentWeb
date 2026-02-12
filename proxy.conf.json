@@ -1,0 +1,20 @@
+[
+    {
+        "context": [
+            "/api/auth"
+        ],
+        "target": "https://127.0.0.1:44303",
+        "secure": false,
+        "changeOrigin": true,
+        "logLevel": "debug"
+    },
+    {
+        "context": [
+            "/api"
+        ],
+        "target": "http://127.0.0.1:46497",
+        "secure": false,
+        "changeOrigin": true,
+        "logLevel": "debug"
+    }
+]

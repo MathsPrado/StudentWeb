@@ -1,0 +1,39 @@
+<div class="page-container">
+    <h2 class="mb-4">My Proposals</h2>
+
+    <div *ngIf="loading" class="text-center py-5">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+
+    <div *ngIf="!loading && proposals.length === 0" class="alert alert-info">
+        You haven't submitted any proposals yet.
+    </div>
+
+    <div *ngIf="!loading && proposals.length > 0" class="card">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0 align-middle">
+                <thead class="bg-light">
+                    <tr>
+                        <th class="ps-4">Project ID</th>
+                        <th>Proposal Amount</th>
+                        <th>Delivery (Days)</th>
+                        <th>Description</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let proposal of proposals">
+                        <td class="ps-4 fw-medium">#{{ proposal.idPropostaSolucao }}</td>
+                        <!-- Ideally resolve project title -->
+                        <td>{{ proposal.orcamento | currency:'BRL' }}</td>
+                        <td>{{ proposal.tempoEntrega }} days</td>
+                        <td class="text-muted text-truncate" style="max-width: 200px;">{{ proposal.descircao }}</td>
+                        <td><span class="badge bg-warning-subtle text-warning rounded-pill">Pending</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

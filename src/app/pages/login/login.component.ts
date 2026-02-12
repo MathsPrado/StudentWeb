@@ -13,7 +13,7 @@ import { AuthService } from '../../services/auth.service';
 })
 export class LoginComponent {
     loginForm: FormGroup;
-    errorMessage: string = '';
+    error: string = '';
     loading: boolean = false;
 
     constructor(
@@ -30,16 +30,20 @@ export class LoginComponent {
     onSubmit() {
         if (this.loginForm.valid) {
             this.loading = true;
-            this.errorMessage = '';
+            this.error = '';
 
-            this.authService.login(this.loginForm.value).subscribe({
+            const { username, password } = this.loginForm.value;
+            this.authService.login({ username, password }).subscribe({
                 next: () => {
-                    this.router.navigate(['/']);
+                    this.router.navigate(['/feed']); // Navigate to feed after login
                 },
                 error: (err) => {
                     this.loading = false;
-                    this.errorMessage = 'Credenciais inválidas ou erro no servidor.';
-                    console.error('Login error', err);
+                    this.error = 'Invalid credentials or server error. Check console for details.';
+                    console.error('Login error details:', err);
+                    if (err.error) {
+                        console.error('Backend returned:', err.error);
+                    }
                 }
             });
         } else {

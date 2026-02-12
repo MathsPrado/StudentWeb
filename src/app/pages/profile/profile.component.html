@@ -1,0 +1,56 @@
+<div class="page-container">
+    <div *ngIf="loading" class="text-center py-5">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+
+    <div *ngIf="!loading && user" class="row">
+        <!-- Sidebar -->
+        <div class="col-lg-4 mb-4">
+            <div class="card text-center h-100">
+                <div class="card-body">
+                    <img src="https://ui-avatars.com/api/?name={{user.nome}}+{{user.sobrenome}}&background=random&size=128"
+                        class="rounded-circle mb-3 avatar-xxl" alt="User Avatar">
+                    <h4 class="mb-1">{{ user.nome }} {{ user.sobrenome }}</h4>
+                    <p class="text-muted mb-3">{{ user.role || 'User' }}</p>
+
+                    <div class="d-flex justify-content-center gap-2 mb-4">
+                        <button class="btn btn-primary btn-sm rounded-pill px-3">Follow</button>
+                        <button class="btn btn-outline-secondary btn-sm rounded-pill px-3">Message</button>
+                    </div>
+
+                    <div class="text-start">
+                        <hr>
+                        <div class="mb-2"><i class="bi bi-envelope me-2 text-primary"></i> {{ user.email }}</div>
+                        <div class="mb-2"><i class="bi bi-telephone me-2 text-primary"></i> {{ user.telefone }}</div>
+                        <div class="mb-2"><i class="bi bi-geo-alt me-2 text-primary"></i> California, United States
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="col-lg-8">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title mb-3">Biography</h5>
+                    <p class="text-muted">{{ user.biografia }}</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title mb-3">Skills</h5>
+                    <div class="d-flex flex-wrap gap-2">
+                        <span *ngFor="let skill of user.skills" class="badge bg-light text-secondary border p-2">
+                            {{ skill }}
+                        </span>
+                        <span *ngIf="!user.skills?.length" class="text-muted">No skills listed.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -8,7 +8,7 @@ import { LoginRequest, LoginResponse } from '../models/models';
     providedIn: 'root'
 })
 export class AuthService {
-    private apiUrl = 'https://localhost:44303/api/Auth';
+    private apiUrl = '/api/auth';
     private tokenKey = 'authToken';
     private isLoggedInSubject = new BehaviorSubject<boolean>(this.hasToken());
 
@@ -16,11 +16,17 @@ export class AuthService {
 
     constructor(private http: HttpClient, private router: Router) { }
 
-    login(request: LoginRequest): Observable<LoginResponse> {
-        return this.http.post<LoginResponse>(`${this.apiUrl}/login`, request).pipe(
-            tap(response => {
-                if (response && response.token) {
-                    localStorage.setItem(this.tokenKey, response.token);
+    login(request: LoginRequest): Observable<any> {
+        // Converting to PascalCase to match C# model explicitly
+        const payload = {
+            Username: request.username,
+            Password: request.password
+        };
+        return this.http.post(`${this.apiUrl}/login`, payload, { responseType: 'text' }).pipe(
+            tap(token => {
+                console.log('Login Token:', token); // Debugging
+                if (token) {
+                    localStorage.setItem(this.tokenKey, token);
                     this.isLoggedInSubject.next(true);
                 }
             })

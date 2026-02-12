@@ -12,14 +12,17 @@ import { AuthService } from '../../services/auth.service';
 })
 export class NavMenuComponent {
     isExpanded = false;
+    isLoggedIn$;
 
-    constructor(public authService: AuthService) { }
+    constructor(public authService: AuthService) {
+        this.isLoggedIn$ = this.authService.isLoggedIn$;
+    }
 
     collapseNavMenu() {
         this.isExpanded = false;
     }
 
-    toggleNavMenu() {
+    toggle() {
         this.isExpanded = !this.isExpanded;
     }
 

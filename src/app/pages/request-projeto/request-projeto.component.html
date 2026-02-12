@@ -1,59 +1,80 @@
-<div class="container mt-5">
+<div class="page-container">
     <div class="row justify-content-center">
-        <h3>Publique agora seu projeto</h3>
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header bg-white border-bottom-0 pb-0 pt-4">
+                    <h3 class="mb-0 text-center text-primary">Publish Project</h3>
+                    <p class="text-center text-muted">Connect with the best students for your project</p>
+                </div>
+                <div class="card-body p-4">
+                    <form [formGroup]="projectForm" (ngSubmit)="onSubmit()">
+                        <div class="mb-4">
+                            <label class="form-label">Project Title</label>
+                            <input type="text" class="form-control" formControlName="titulo"
+                                placeholder="e.g. Mobile App Development">
+                            <div *ngIf="projectForm.get('titulo')?.touched && projectForm.get('titulo')?.invalid"
+                                class="text-danger small mt-1">
+                                Title is required
+                            </div>
+                        </div>
+
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label class="form-label">Budget (R$)</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-white">R$</span>
+                                    <input type="text" class="form-control" formControlName="orcamento"
+                                        placeholder="1000">
+                                </div>
+                                <div *ngIf="projectForm.get('orcamento')?.touched && projectForm.get('orcamento')?.invalid"
+                                    class="text-danger small mt-1">
+                                    Required
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Location</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-white"><i class="bi bi-geo-alt"></i></span>
+                                    <input type="text" class="form-control" formControlName="local"
+                                        placeholder="Remote or City">
+                                </div>
+                                <div *ngIf="projectForm.get('local')?.touched && projectForm.get('local')?.invalid"
+                                    class="text-danger small mt-1">
+                                    Required
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label class="form-label">Start Date</label>
+                                <input type="date" class="form-control" formControlName="dataInicio">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">End Date</label>
+                                <input type="date" class="form-control" formControlName="dataFim">
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label">Description</label>
+                            <textarea class="form-control" rows="6" formControlName="descricao"
+                                placeholder="Describe your project requirements in detail..."></textarea>
+                            <div *ngIf="projectForm.get('descricao')?.touched && projectForm.get('descricao')?.invalid"
+                                class="text-danger small mt-1">
+                                Description is required
+                            </div>
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary py-2 btn-lg"
+                                [disabled]="submitting || projectForm.invalid">
+                                {{ submitting ? 'Publishing...' : 'Publish Project' }}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <form [formGroup]="projectForm" (ngSubmit)="onSubmit()" class="mt-4">
-        <div class="row">
-            <div class="col-md-6 mb-3">
-                <label for="titulo" class="form-label">Título</label>
-                <input type="text" class="form-control" id="titulo" formControlName="titulo" placeholder="Titulo">
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-6 mb-3">
-                <label for="dataInicio" class="form-label">Início</label>
-                <input type="date" class="form-control" id="dataInicio" formControlName="dataInicio">
-            </div>
-            <div class="col-md-6 mb-3">
-                <label for="dataFim" class="form-label">Fim</label>
-                <input type="date" class="form-control" id="dataFim" formControlName="dataFim">
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-6 mb-3">
-                <label for="orcamento" class="form-label">Orçamento</label>
-                <input type="text" class="form-control" id="orcamento" formControlName="orcamento"
-                    placeholder="Orçamento">
-            </div>
-            <div class="col-md-6 mb-3">
-                <label for="local" class="form-label">Local</label>
-                <input type="text" class="form-control" id="local" formControlName="local" placeholder="Local">
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-9 mb-3">
-                <label for="descricao" class="form-label">Descrição</label>
-                <textarea class="form-control" id="descricao" rows="10" formControlName="descricao"></textarea>
-            </div>
-        </div>
-
-        <div class="text-center">
-            <button type="submit" class="btn btn-primary" [disabled]="loading">
-                <span *ngIf="loading" class="spinner-border spinner-border-sm me-2" role="status"
-                    aria-hidden="true"></span>
-                Salvar
-            </button>
-        </div>
-
-        <div *ngIf="successMessage" class="alert alert-success mt-3" role="alert">
-            {{ successMessage }}
-        </div>
-        <div *ngIf="errorMessage" class="alert alert-danger mt-3" role="alert">
-            {{ errorMessage }}
-        </div>
-    </form>
 </div>

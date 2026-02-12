@@ -1,0 +1,48 @@
+<div class="page-container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="mb-0">Explore Projects</h2>
+        <button class="btn btn-primary" routerLink="/request-projeto">
+            <i class="bi bi-plus-lg me-2"></i>Post a Project
+        </button>
+    </div>
+
+    <div *ngIf="loading" class="text-center py-5">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+
+    <div *ngIf="error" class="alert alert-danger">
+        {{ error }}
+    </div>
+
+    <div *ngIf="!loading && !error" class="row g-4">
+        <div class="col-md-6 col-lg-4" *ngFor="let project of projects">
+            <div class="card h-100 project-card" (click)="openDetails(project.id)">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div class="badge bg-light text-primary border border-primary-subtle rounded-pill px-3 py-2">
+                            {{ project.orcamento || 'N/A' }}
+                        </div>
+                        <span class="text-muted small"><i class="bi bi-geo-alt me-1"></i>{{ project.local || 'Remote'
+                            }}</span>
+                    </div>
+
+                    <h5 class="card-title mb-2">{{ project.titulo || 'Untitled' }}</h5>
+                    <p class="card-text text-muted project-desc">{{ project.descricao || 'No description' }}</p>
+
+                    <div class="mt-4 d-flex align-items-center justify-content-between">
+                        <div class="d-flex align-items-center">
+                            <span class="badge bg-success-subtle text-success rounded-pill">Active</span>
+                        </div>
+                        <button class="btn btn-outline-primary btn-sm rounded-pill px-4">View Details</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="!loading && projects.length === 0" class="text-center py-5">
+        <p class="text-muted">No projects found.</p>
+    </div>
+</div>

@@ -1,0 +1,94 @@
+<div class="page-container">
+    <div *ngIf="loading" class="text-center py-5">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+
+    <div *ngIf="!loading && project" class="row">
+        <!-- Project Details -->
+        <div class="col-lg-8 mb-4">
+            <div class="card h-100">
+                <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0">{{ project.titulo }}</h4>
+                    <span class="badge bg-primary rounded-pill">{{ project.orcamento | currency:'BRL' }}</span>
+                </div>
+                <div class="card-body">
+                    <p class="text-muted mb-4">{{ project.descricao }}</p>
+
+                    <div class="mb-4">
+                        <h6 class="fw-bold">Skills Required</h6>
+                        <div class="d-flex flex-wrap gap-2">
+                            <span *ngFor="let skill of project.listaConhecimentos"
+                                class="badge bg-light text-dark border p-2">
+                                {{ skill }}
+                            </span>
+                            <span *ngIf="!project.listaConhecimentos?.length" class="text-muted small">No specific
+                                skills listed.</span>
+                        </div>
+                    </div>
+
+                    <div class="row g-3 text-muted small">
+                        <div class="col-auto"><i class="bi bi-geo-alt me-1"></i> {{ project.local }}</div>
+                        <div class="col-auto"><i class="bi bi-calendar me-1"></i> Due: {{ project.dataFim | date }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Proposal Form -->
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Submit a Proposal</h5>
+                </div>
+                <div class="card-body">
+                    <p class="small text-muted mb-3">You can edit your proposal until the project is awarded.</p>
+
+                    <form [formGroup]="proposalForm" (ngSubmit)="onSubmit()">
+                        <div class="mb-3">
+                            <label class="form-label">Bid Amount (R$)</label>
+                            <input type="text" class="form-control" formControlName="orcamento" placeholder="5000">
+                            <div *ngIf="proposalForm.get('orcamento')?.touched && proposalForm.get('orcamento')?.invalid"
+                                class="text-danger small mt-1">
+                                Required
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Delivery Time (Days)</label>
+                            <input type="number" class="form-control" formControlName="tempoEntrega" placeholder="10">
+                            <div *ngIf="proposalForm.get('tempoEntrega')?.touched && proposalForm.get('tempoEntrega')?.invalid"
+                                class="text-danger small mt-1">
+                                Required
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Proposal Details</label>
+                            <textarea class="form-control" rows="5" formControlName="descircao"
+                                placeholder="Why are you the best fit?"></textarea>
+                            <div *ngIf="proposalForm.get('descircao')?.touched && proposalForm.get('descircao')?.invalid"
+                                class="text-danger small mt-1">
+                                Description is required
+                            </div>
+                        </div>
+
+                        <div *ngIf="successMessage" class="alert alert-success small">
+                            {{ successMessage }}
+                        </div>
+                        <div *ngIf="error" class="alert alert-danger small">
+                            {{ error }}
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100"
+                            [disabled]="submitting || proposalForm.invalid">
+                            {{ submitting ? 'Sending...' : 'Send Proposal' }}
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

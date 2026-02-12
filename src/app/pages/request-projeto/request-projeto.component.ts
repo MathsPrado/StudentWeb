@@ -41,45 +41,44 @@ export class RequestProjetoComponent implements OnInit {
         return date.toISOString().split('T')[0];
     }
 
+    submitting: boolean = false;
+
+    // ... (constructor remains same)
+
     onSubmit() {
-        if (this.projectForm.value.titulo === '' ||
-            this.projectForm.value.orcamento === '' ||
-            this.projectForm.value.local === '' ||
-            this.projectForm.value.descricao === '') {
-            this.errorMessage = 'Preencher todos os campos';
+        if (this.projectForm.invalid) {
+            this.projectForm.markAllAsTouched();
             return;
         }
 
-        this.loading = true;
+        this.submitting = true;
         this.errorMessage = '';
         this.successMessage = '';
 
         const solicitacao: SolicitacaoProjeto = {
             ...this.projectForm.value,
-            // Map form string dates to Date objects if needed, but passing as string might fail if backend expects strict Date.
-            // However, C# DateTime usually accepts ISO strings.
-            // The interface says Date, but form returns string.
-            // Let's assume standard binding.
+            id: 0, // Backend should handle ID generation
             semDataInicio: false,
             semDataFim: false,
-            listaConhecimentos: []
+            listaConhecimentos: [] // Mock for now
         };
 
         this.solicitacaoService.create(solicitacao).subscribe({
             next: (response) => {
-                this.loading = false;
-                if (response === 'OK') {
-                    this.successMessage = 'Salvo com sucesso!';
-                    this.resetForm();
-                    // location.reload() equivalent or router navigate
-                    // The blazor code forced a reload. We can just reset.
+                this.submitting = false;
+                // Backend returns "OK" or error string
+                if (response === 'OK' || response?.status === 200 || typeof response === 'object') {
+                    this.successMessage = 'Project published successfully!';
+                    this.projectForm.reset();
+                    // Optional: Navigate to feed
+                    // this.router.navigate(['/feed']);
                 } else {
-                    this.errorMessage = 'Erro: ' + response;
+                    this.errorMessage = 'Error: ' + response;
                 }
             },
             error: (err) => {
-                this.loading = false;
-                this.errorMessage = 'Ocorreu um erro ao salvar.';
+                this.submitting = false;
+                this.errorMessage = 'Failed to publish project. Please try again.';
                 console.error(err);
             }
         });
